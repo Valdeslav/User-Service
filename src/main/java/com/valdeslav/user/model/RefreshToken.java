@@ -3,7 +3,7 @@ package com.valdeslav.user.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.Instant;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -18,7 +18,7 @@ public class RefreshToken extends BaseEntity<Long> {
     private String value;
 
     @Column(name = "expiry_date", nullable = false)
-    private Instant expiryDate;
+    private Date expiryDate;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
