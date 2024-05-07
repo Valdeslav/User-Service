@@ -1,8 +1,6 @@
 package com.valdeslav.user.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 
@@ -10,5 +8,6 @@ import java.io.Serializable;
 public abstract class BaseEntity<T extends Serializable> implements Serializable {
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private T id;
 }

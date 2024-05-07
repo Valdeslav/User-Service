@@ -23,4 +23,12 @@ public class JwtTokenService extends BaseTokenService {
                 .claim("roles", user.getRoles())
                 .compact();
     }
+
+    public boolean validateToken(String token) {
+        return validateToken(token, jwtKeysConfig.getJwtTokenSecretKey());
+    }
+
+    public String extractUsername(String token) {
+        return extractUsername(token, jwtKeysConfig.getJwtTokenSecretKey());
+    }
 }

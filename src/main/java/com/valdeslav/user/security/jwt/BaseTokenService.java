@@ -31,6 +31,10 @@ public abstract class BaseTokenService {
         return false;
     }
 
+    protected String extractUsername(String token, SecretKey secretKey) {
+        return getClaims(token, secretKey).getSubject();
+    }
+
     protected Claims getClaims(String token, SecretKey secretKey) {
         return Jwts.parser()
                 .verifyWith(secretKey)

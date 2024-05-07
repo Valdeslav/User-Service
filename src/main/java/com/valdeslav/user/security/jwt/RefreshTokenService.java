@@ -44,4 +44,8 @@ public class RefreshTokenService extends BaseTokenService {
         return refreshTokenRepository.findByValue(value);
     }
 
+    public boolean validateToken(String token) {
+        return validateToken(token, jwtKeysConfig.getRefreshTokenSecretKey());
+    }
+
 }
