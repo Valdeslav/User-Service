@@ -1,6 +1,7 @@
 package com.valdeslav.user.configuration;
 
 import com.valdeslav.user.repository.UserRepository;
+import com.valdeslav.user.security.AuthenticationEntryPointImpl;
 import com.valdeslav.user.security.JwtAuthFilter;
 import com.valdeslav.user.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -32,15 +33,17 @@ public class SecurityConfig {
     private final UserRepository userRepository;
     private final JwtAuthFilter jwtAuthFilter;
     private final CorsConfig corsConfig;
+    private final AuthenticationEntryPointImpl authenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("api/v1/login").permitAll())
-                .authorizeHttpRequests(auth -> auth.requestMatchers("api/v1/**").authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/login", "/api/v1/user/create").permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/**").authenticated())
                 .authenticationProvider(authenticationProvider())
+                .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(authenticationEntryPoint))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

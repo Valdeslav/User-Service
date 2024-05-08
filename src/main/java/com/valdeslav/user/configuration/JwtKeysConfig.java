@@ -18,8 +18,8 @@ public class JwtKeysConfig {
     private final SecretKey refreshTokenSecretKey;
 
     public JwtKeysConfig(
-            @Value("${token.refresh.lifetime}") Long jwtTokenLifetime,
-            @Value("${token.jwt.lifetime}") Long refreshTokenLifetime,
+            @Value("${token.jwt.lifetime}") Long jwtTokenLifetime,
+            @Value("${token.refresh.lifetime}") Long refreshTokenLifetime,
             @Value("${token.jwt.key}") String jwtTokenSecret,
             @Value("${token.refresh.key}") String refreshTokenSecret
     ) {

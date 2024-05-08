@@ -1,4 +1,4 @@
-package com.valdeslav.user.dto;
+package com.valdeslav.user.dto.request;
 
 import lombok.*;
 

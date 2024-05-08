@@ -1,7 +1,7 @@
 package com.valdeslav.user.controller;
 
-import com.valdeslav.user.dto.AuthRequest;
-import com.valdeslav.user.dto.JwtResponse;
+import com.valdeslav.user.dto.request.AuthRequest;
+import com.valdeslav.user.dto.response.JwtResponse;
 import com.valdeslav.user.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;

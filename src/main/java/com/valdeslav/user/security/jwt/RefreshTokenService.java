@@ -6,6 +6,7 @@ import com.valdeslav.user.repository.RefreshTokenRepository;
 import com.valdeslav.user.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,4 +49,8 @@ public class RefreshTokenService extends BaseTokenService {
         return validateToken(token, jwtKeysConfig.getRefreshTokenSecretKey());
     }
 
+    @Scheduled(cron = "0 0 * * * *")
+    public void deleteExpired() {
+        refreshTokenRepository.deleteAllByExpiryDateBefore(new Date());
+    }
 }

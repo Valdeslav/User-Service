@@ -3,12 +3,14 @@ package com.valdeslav.user.security.jwt;
 import com.valdeslav.user.configuration.JwtKeysConfig;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.crypto.SecretKey;
 
 @Slf4j
 public abstract class BaseTokenService {
 
+    @Autowired
     protected JwtKeysConfig jwtKeysConfig;
 
     protected boolean validateToken(String token, SecretKey secretKey) {
@@ -16,16 +18,16 @@ public abstract class BaseTokenService {
             Jwts.parser()
                     .verifyWith(secretKey)
                     .build()
-                    .parseUnsecuredClaims(token);
+                    .parseSignedClaims(token);
             return true;
-        } catch (ExpiredJwtException expEx) {
-            log.error("Token expired", expEx);
-        } catch (UnsupportedJwtException unsEx) {
-            log.error("Unsupported jwt", unsEx);
-        } catch (MalformedJwtException mjEx) {
-            log.error("Malformed jwt", mjEx);
+        } catch (ExpiredJwtException e) {
+            log.info("Token expired: " + e.getMessage());
+        } catch (UnsupportedJwtException e) {
+            log.info("Unsupported jwt: " + e.getMessage());
+        } catch (MalformedJwtException e) {
+            log.info("Malformed jwt: " + e.getMessage());
         } catch (Exception e) {
-            log.error("invalid token", e);
+            log.info("invalid token: " + e.getMessage());
         }
 
         return false;
@@ -39,7 +41,7 @@ public abstract class BaseTokenService {
         return Jwts.parser()
                 .verifyWith(secretKey)
                 .build()
-                .parseUnsecuredClaims(token)
+                .parseSignedClaims(token)
                 .getPayload();
     }
 }

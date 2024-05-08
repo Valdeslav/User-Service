@@ -1,4 +1,4 @@
-package com.valdeslav.user.dto;
+package com.valdeslav.user.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
