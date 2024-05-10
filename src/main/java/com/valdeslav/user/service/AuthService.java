@@ -1,12 +1,14 @@
 package com.valdeslav.user.service;
 
 import com.valdeslav.user.dto.request.AuthRequest;
+import com.valdeslav.user.dto.request.RefreshTokenRequest;
 import com.valdeslav.user.dto.response.JwtResponse;
 import com.valdeslav.user.exception.AuthException;
 import com.valdeslav.user.exception.NotFoundException;
 import com.valdeslav.user.model.RefreshToken;
 import com.valdeslav.user.model.User;
 import com.valdeslav.user.repository.UserRepository;
+import com.valdeslav.user.security.JwtUserDetails;
 import com.valdeslav.user.security.jwt.JwtTokenService;
 import com.valdeslav.user.security.jwt.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -41,5 +44,27 @@ public class AuthService {
         } else {
             throw new AuthException("Authorization failed. Please check your username and password");
         }
+    }
+
+    public JwtResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
+        if (!refreshTokenService.validateToken(refreshTokenRequest.getValue())) {
+            throw new AuthException("Invalid refresh token. Please authorize again.");
+        }
+
+        RefreshToken refreshToken = refreshTokenService.findByValue(refreshTokenRequest.getValue())
+                .orElseThrow(() -> new AuthException("Cannot refresh token."));
+
+        return new JwtResponse(jwtTokenService.generateAccessToken(refreshToken.getUser()), refreshToken.getValue());
+    }
+
+    public void logout(RefreshTokenRequest refreshTokenRequest) {
+        User user = userRepository.findByUsername(getCurrentUserName()).orElse(null);
+
+        refreshTokenService.deleteByUserAndValue(user, refreshTokenRequest.getValue());
+
+    }
+
+    public String getCurrentUserName() {
+        return ((JwtUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
     }
 }

@@ -49,6 +49,13 @@ public class RefreshTokenService extends BaseTokenService {
         return validateToken(token, jwtKeysConfig.getRefreshTokenSecretKey());
     }
 
+    public void deleteByUserAndValue(User user, String token) {
+        String userName = extractUsername(token, jwtKeysConfig.getRefreshTokenSecretKey());
+        if (user != null && user.getUsername().equals(userName)) {
+            refreshTokenRepository.deleteByUserAndValue(user, token);
+        }
+    }
+
     @Scheduled(cron = "0 0 * * * *")
     public void deleteExpired() {
         refreshTokenRepository.deleteAllByExpiryDateBefore(new Date());
