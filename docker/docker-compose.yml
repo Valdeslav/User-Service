@@ -1,0 +1,33 @@
+version: '2'
+
+services:
+  app:
+    image: 'docker-spring-boot-postgres:latest'
+    build:
+      context: ./..
+      dockerfile: ./docker/Dockerfile
+    container_name: app
+
+    depends_on:
+      - db
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+
+
+  db:
+    image: 'postgres:13.1-alpine'
+    container_name: db
+    env_file:
+      - .env
+    volumes:
+      - ../src/main/resources/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+
+volumes:
+  db-data:
