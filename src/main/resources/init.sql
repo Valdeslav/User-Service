@@ -1,1 +1,1 @@
-CREATE DATABASE recipes-user;
+CREATE DATABASE recipes_user;
