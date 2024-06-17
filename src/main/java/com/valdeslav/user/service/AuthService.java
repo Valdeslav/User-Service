@@ -19,6 +19,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -30,19 +32,19 @@ public class AuthService {
     private final JwtTokenService jwtTokenService;
 
     public JwtResponse login(AuthRequest authRequest) {
-        User user = userRepository.findByUsername(authRequest.getUsername())
-                .orElseThrow(() -> new NotFoundException(String.format("User %s is not found", authRequest.getUsername())));
-
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
 
-        if (authentication.isAuthenticated()) {
+        Optional<User> userOptional = userRepository.findByUsername(authRequest.getUsername());
+
+        if (userOptional.isPresent() && authentication.isAuthenticated()) {
+            User user = userOptional.get();
             log.info("User authenticated successfully: " + user.getUsername());
             RefreshToken refreshToken = refreshTokenService.create(user);
 
             return new JwtResponse(jwtTokenService.generateAccessToken(user), refreshToken.getValue());
         } else {
-            throw new AuthException("Authorization failed. Please check your username and password");
+            throw new AuthException("Authentication error: Bad credentials");
         }
     }
 
