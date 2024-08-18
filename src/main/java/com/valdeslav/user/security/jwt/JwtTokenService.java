@@ -1,5 +1,6 @@
 package com.valdeslav.user.security.jwt;
 
+import com.valdeslav.user.model.Role;
 import com.valdeslav.user.model.User;
 import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -20,7 +22,9 @@ public class JwtTokenService extends BaseTokenService {
                 .subject(user.getUsername())
                 .expiration(expiration)
                 .signWith(jwtKeysConfig.getJwtTokenSecretKey())
-                .claim("roles", user.getRoles())
+                .claim("roles", user.getRoles().stream()
+                        .map(Role::getName)
+                        .collect(Collectors.toList()))
                 .compact();
     }
 

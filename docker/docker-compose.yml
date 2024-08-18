@@ -1,12 +1,12 @@
 version: '2'
 
 services:
-  app:
+  user_app:
     image: 'user-service:latest'
     build:
       context: ./..
       dockerfile: ./docker/Dockerfile
-    container_name: app
+    container_name: user_app
 
     depends_on:
       - user_db

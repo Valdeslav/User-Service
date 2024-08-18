@@ -1,6 +1,6 @@
 package com.valdeslav.user.dto.response;
 
-import com.valdeslav.user.dto.enums.ResponseStatus;
+import com.valdeslav.user.dto.enums.ResponseCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +11,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SimpleResponse {
-    private ResponseStatus status;
+    private ResponseCode status;
     private String message;
 }

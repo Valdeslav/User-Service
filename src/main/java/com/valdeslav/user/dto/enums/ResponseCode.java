@@ -1,6 +1,6 @@
 package com.valdeslav.user.dto.enums;
 
-public enum ResponseStatus {
+public enum ResponseCode {
     OK,
     ERROR,
     UNAUTHORIZED

@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/", "/api/v1/login", "/api/v1/users/create", "/api/v1/refresh-token").permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/", "/api/v1/login", "/api/v1/users/create", "/api/v1/refresh-token", "/swagger-ui/**", "/v3/api-docs/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/**").authenticated())
                 .authenticationProvider(authenticationProvider())
                 .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(authenticationEntryPoint))
