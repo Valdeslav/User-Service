@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/users")
-@Tag(name = "Контроллер пользователя")
+@Tag(name = "User controller")
 public class UserController {
 
     private final UserService userService;
 
     @PostMapping("/create")
-    @Operation(summary = "Добавить нового пользователя в систему")
+    @Operation(summary = "Add a new user to the system")
     public ResponseEntity<SimpleResponse> createUser(@RequestBody @Valid UserCreateDto userCreateDto) {
         userService.create(userCreateDto);
 
@@ -29,7 +29,7 @@ public class UserController {
     }
 
     @GetMapping("/test-access")
-    @Operation(summary = "Проверить авторизацию пользователя")
+    @Operation(summary = "Check user authorization")
     public String testAccess() {
         return "You have access!";
     }
