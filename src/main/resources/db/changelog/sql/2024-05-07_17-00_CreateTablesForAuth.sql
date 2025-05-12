@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS user_role (
 -- changeset Vladislav Tsarenko:2024-05-07_17-00_4
 CREATE TABLE IF NOT EXISTS refresh_token (
     id              BIGSERIAL       PRIMARY KEY,
-    "value"           VARCHAR(256)    NOT NULL,
+    token_value     VARCHAR(256)    NOT NULL,
     expiry_date     TIMESTAMP       NOT NULL,
     user_info_id    BIGINT          NOT NULL,
     FOREIGN KEY (user_info_id) REFERENCES user_info(id)
