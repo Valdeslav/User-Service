@@ -44,7 +44,7 @@ public class AuthService {
 
             return new JwtResponse(jwtTokenService.generateAccessToken(user), refreshToken.getValue());
         } else {
-            throw new AuthException("Authentication error: Bad credentials");
+            throw new AuthException("Bad credentials");
         }
     }
 

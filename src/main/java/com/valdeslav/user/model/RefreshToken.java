@@ -14,7 +14,7 @@ import java.util.Date;
 @Table(name = "refresh_token")
 public class RefreshToken extends BaseEntity<Long> {
 
-    @Column(name = "value", nullable = false)
+    @Column(name = "token_value", nullable = false)
     private String value;
 
     @Column(name = "expiry_date", nullable = false)
